@@ -119,7 +119,7 @@ export class MeetingClientV2 implements MeetingClient {
     this.ws.onmessage = (event: MessageEvent) => this.onMessage(event);
   }
 
-  private onMessage(event: MessageEvent) {
+  private async onMessage(event: MessageEvent) {
     console.debug(event.type);
     console.debug(event.data);
     const forAllDeferred = (handle: (deferred: Deferred<UpdateMessage>) => void) => {
@@ -140,7 +140,7 @@ export class MeetingClientV2 implements MeetingClient {
       this.messageCallback?.(statusMessageV1);
     } else if (this.isTokenRefreshMessage(msg)) {
       console.debug("Refresh token message. Updating local storage.");
-      setToken(msg.tokenRefresh);
+      await setToken(msg.tokenRefresh);
     } else if (this.isResponseMessage(msg)) {
       if (msg.requestId === 0) {
         // only for responses to our requests

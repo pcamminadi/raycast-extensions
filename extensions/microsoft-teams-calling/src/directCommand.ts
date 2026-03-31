@@ -17,5 +17,7 @@ export async function directCommand(
     }
   } catch (error) {
     await showHUD(hudErrorTitle);
+  } finally {
+    client.close();
   }
 }
